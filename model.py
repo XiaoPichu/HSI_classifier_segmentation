@@ -76,7 +76,15 @@ class Model():
             assert flatten2.shape.as_list()[-1]==1052
             return flatten2
 
-  
+
+        def model_loss(logits, labels):
+            with tf.variable_scope('caculate_loss') :
+                cross_entropy = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=labels, logits=logits, name='corss_entropy')
+                cross_entropy_mean = tf.reduce_mean(cross_entropy, name='cross_entropy_mean')
+            tf.summary.scalar('cross_loss', cross_entropy_mean)
+            return cross_entropy_mean
+
+
 def _weight_variable(name, shape, mean=0):
   """weight_variable generates a weight variable of a given shape."""
   initializer = tf.truncated_normal_initializer(mean=mean,stddev=0.1)
